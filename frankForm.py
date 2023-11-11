@@ -10,5 +10,5 @@ with st.form(customerInfo_form):
     passWord = st.text_input(label = "Password", type = "password")
     name = st.text_input(label = "Enter your name (Optional)")
     submitButton = st.button("Submit")
-st.write("HI Frank")
+st.write("HI Mio")
 
