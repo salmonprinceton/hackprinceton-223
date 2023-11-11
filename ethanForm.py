@@ -1,4 +1,4 @@
 import streamlit as st
 
 st.write("MY PP")
-ethanButton =st.button("Ethan")
+ethanButton =st.link_button("Ethan", "/delivererInterface")
