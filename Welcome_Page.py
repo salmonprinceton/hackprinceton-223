@@ -8,6 +8,8 @@ if "Current User" not in st.session_state:
     st.session_state["Current User"] = ""
 if "User Display" not in st.session_state:
     st.session_state["User Display"] = "Hello! Please create a new account or log in :)"
+if "Is Deliverer" not in st.session_state:
+    st.session_state["Is Deliverer"] = False
 st.caption(st.session_state["User Display"])
 
 with st.form("customerInfo_form"):
@@ -70,6 +72,9 @@ if submitButton:
         # based on the entered credentials
         st.session_state["Current User"] = email
         st.session_state["User Display"] = "A new account was created for " + email + ". Welcome!~"
+        if deliverer == 1:
+            st.session_state["Is Deliverer"] = 1
+        
     st.rerun()
 with open("style.css") as f:
     st.markdown(f'<style>{f.read()}</styles', unsafe_allow_html = True)

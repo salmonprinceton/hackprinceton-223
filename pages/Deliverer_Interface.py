@@ -11,9 +11,13 @@ delivery_url = 'http://10.24.106.64:5000/delivery_data'
 delivery_response = requests.get(delivery_url)
 delivery_stuff = delivery_response.json()
 
-isDeliverer = True
+isDeliverer = False
+print(st.session_state["Is Deliverer"])
+if "Current User" in st.session_state:
+    if st.session_state["Is Deliverer"] == 1:
+        isDeliverer = True
+    print(isDeliverer)
 
-print(order_data)
 if isDeliverer:
 
     Order_ID = st.number_input("Order ID to change", 0)
@@ -26,21 +30,19 @@ if isDeliverer:
     df = pd.DataFrame(order_data)
     st.dataframe(df)
 
-    daf = pd.DataFrame(delivery_stuff, columns=['status', 'Order_ID'])
-    st.dataframe(daf)
+    delivery_url = 'http://10.24.106.64:5000/delivery_data'
+    delivery_data = {'Order_ID': Order_ID,
+                    'completed_date': completed_date,
+                    'status': status
+                    }
 
+    headers = {'Content-Type': 'application/json'}
+
+    if submit_button:
+        response = requests.post(delivery_url, json=delivery_data, headers=headers)
+
+        print(response.text)
 else:
-    st.write("GET YOUR GOOFY ASS OUT OF HERE!!!!")
+    st.write("You must be a logged-in deliverer to access this page.")
 
-delivery_url = 'http://10.24.106.64:5000/delivery_data'
-delivery_data = {'Order_ID': Order_ID,
-                 'completed_date': completed_date,
-                 'status': status
-                 }
 
-headers = {'Content-Type': 'application/json'}
-
-if submit_button:
-    response = requests.post(delivery_url, json=delivery_data, headers=headers)
-
-    print(response.text)
