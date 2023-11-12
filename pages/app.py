@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, app
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from datetime import datetime
 from sqlalchemy import ForeignKey
+import pymysql
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://HackPrincetonUser:HackPrinceton@LAPTOP-JCH0P14A/hackprinceton'
@@ -150,9 +151,10 @@ def get_all_delivery_data():
         return jsonify({'error': str(e)})
 
 
-if __name__ == '__main__':
+if __name__ != '__main__':
+    pass
+else:
     with app.app_context():
         db.create_all()
         migrate.init_app(app, db)
     app.run(host='0.0.0.0', port=5000)
-
