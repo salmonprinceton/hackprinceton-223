@@ -4,6 +4,7 @@ import datetime as dt
 import json
 
 st.title("Welcome to Princeton Care Package")
+st.title("✨Welcome to Princeton Care Package✨")
 if "Current User" not in st.session_state:
     st.session_state["Current User"] = ""
 if "User Display" not in st.session_state:
@@ -72,6 +73,8 @@ if submitButton:
         st.session_state["Current User"] = email
         st.session_state["User Display"] = "A new account was created for " + email + ". Welcome!~"
     st.rerun()
+with open("style.css") as f:
+    st.markdown(f'<style>{f.read()}</styles', unsafe_allow_html = True)
 
 if submitOrder:
     order_response = requests.post(order_url, json=order_data, headers=headers)
