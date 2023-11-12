@@ -9,20 +9,25 @@ response = requests.get(order_url)
 order_data = response.json()
 delivery_url = 'http://10.24.106.64:5000/delivery_data'
 delivery_response = requests.get(delivery_url)
-delivery_list = delivery_response.json()
+delivery_stuff = delivery_response.json()
 
 isDeliverer = True
 
 if isDeliverer:
+
     Order_ID = st.number_input("Order ID to change", 0)
-    dt = dt.datetime.now()
-    dt_str = dt.strftime("%Y-%m-%d %H:%M:%S")
+    dat = dt.datetime.now()
+    dt_str = dat.strftime("%Y-%m-%d %H:%M:%S")
     completed_date = json.dumps(dt_str)
     status = st.selectbox("Order Status", ["Processed", "Delivering", "Completed"])
     submit_button = st.button("Change order status")
 
     df = pd.DataFrame(order_data)
     st.dataframe(df)
+
+    daf = pd.DataFrame(delivery_stuff, columns=['status', 'Order_ID'])
+    st.dataframe(daf)
+
 else:
     st.write("GET YOUR GOOFY ASS OUT OF HERE!!!!")
 
