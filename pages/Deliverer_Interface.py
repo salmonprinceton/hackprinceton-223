@@ -11,15 +11,6 @@ delivery_url = 'http://10.24.106.64:5000/delivery_data'
 delivery_response = requests.get(delivery_url)
 delivery_list = delivery_response.json()
 
-# initializing session state if it doesn't already exist
-for delivery in delivery_list:
-    name = "Order " + str(delivery.Order_ID) + " "
-
-    if name + "Date" not in st.session_state:
-        st.session_state[name + "Date"] = ""
-    if name + "Status" not in st.session_state:
-        st.session_state[name + "Status"] = delivery.status
-
 isDeliverer = True
 
 if isDeliverer:
