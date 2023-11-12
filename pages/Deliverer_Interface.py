@@ -4,10 +4,10 @@ import streamlit as st
 import requests
 import json
 
-order_url = 'http://127.0.0.1:5000/order_data'
+order_url = 'http://10.24.106.64:5000/order_data'
 response = requests.get(order_url)
 order_data = response.json()
-delivery_url = 'http://127.0.0.1:5000/delivery_data'
+delivery_url = 'http://10.24.106.64:5000/delivery_data'
 delivery_response = requests.get(delivery_url)
 delivery_list = delivery_response.json()
 
@@ -35,7 +35,7 @@ if isDeliverer:
 else:
     st.write("GET YOUR GOOFY ASS OUT OF HERE!!!!")
 
-delivery_url = 'http://127.0.0.1:5000/delivery_data'
+delivery_url = 'http://10.24.106.64:5000/delivery_data'
 delivery_data = {'Order_ID': Order_ID,
                  'completed_date': completed_date,
                  'status': status
