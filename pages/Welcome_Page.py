@@ -30,8 +30,8 @@ with st.form("placingOrder_form"):
     submitOrder = st.form_submit_button(label="Submit Order")
 st.header('Thank you for ordering!')
 
-url = 'http://127.0.0.1:5000/data'
-order_url = 'http://127.0.0.1:5000/order_data'
+url = 'http://10.24.106.64:5000/data'
+order_url = 'http://10.24.106.64:5000/order_data'
 data = {'email': email,
         'password': password,
         'name': name,
