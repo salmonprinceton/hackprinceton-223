@@ -1,1 +1,7 @@
-pages.data_structure.ds
+pymysql
+requests
+json
+flask
+flask_sqlalchemy
+flask_cors
+flask_migrate

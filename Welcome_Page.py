@@ -4,6 +4,11 @@ import datetime as dt
 import json
 
 st.title("Welcome to Princeton Care Package")
+if "Current User" not in st.session_state:
+    st.session_state["Current User"] = ""
+if "User Display" not in st.session_state:
+    st.session_state["User Display"] = "Hello! Please create a new account or log in :)"
+st.caption(st.session_state["User Display"])
 
 with st.form("customerInfo_form"):
     email = st.text_input(label="Email")
@@ -46,10 +51,26 @@ order_data = {'product': product,
 
 headers = {'Content-Type': 'application/json'}
 
+existing_login = {
+    "ep0148@princeton.edu" : "baka"
+}
+
 if submitButton:
     response = requests.post(url, json=data, headers=headers)
+    if email in existing_login: # do an sql select statement on the Users table where it searches for a user with that specific email
+    # if such a user exists, this code block should execute.
 
-    print(response.text)
+        if existing_login[email] == password: # compare the password on the database with the entered password
+            st.session_state["Current User"] = email
+            st.session_state["User Display"] = "Welcome back, " + email + "!"
+        else:
+            st.session_state["User Display"] = "The entered password is incorrect. Did you make a typo?"
+    else:
+        existing_login.update({email : password}) # this should update the users table with a new user object based on the entered credentials
+        st.session_state["Current User"] = email
+        st.session_state["User Display"] = "A new account was created for " + email + ". Welcome!~"
+    st.rerun()
+
 
 if submitOrder:
     order_response = requests.post(order_url, json=order_data, headers=headers)
