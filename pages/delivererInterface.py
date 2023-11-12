@@ -78,11 +78,3 @@ def update_table():
         "Status" : [status for status in status_list]
     }
 )
-
-def ohio():
-    st.title("No!!!!!!!!!!!!!!!")
-    # global status_list
-    # status_list = ["Arrived", "Processed", "Delivering", "Delivering", "Arrived"]
-    # update_table()
-
-st.button("Go to Ohio", on_click = ohio)
