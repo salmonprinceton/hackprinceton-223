@@ -33,48 +33,37 @@ for order in order_list:
     if name + "Status" not in st.session_state:
         st.session_state[name + "Status"] = order.status
 
-order_id_modify = st.number_input("Order ID to change", 0)
-order_status_modify = st.selectbox("Order Status", ["Processed", "Delivering", "Completed"])
-submit_button = st.button("Change order status")
+isDeliverer = False
 
-if submit_button:
-    name = "Order " + str(order_id_modify)
-    if name + " Status" in st.session_state:
-        order_list[order_id_modify].status = order_status_modify
-        st.session_state[name + " Status"] = order_status_modify
-        if order_status_modify == "Completed":
-            datestr = dt.datetime.now().strftime("%y/%m/%d %H:%M")
-            order_list[order_id_modify].date_completed = datestr
-            st.session_state[name + " Date"] = datestr
-    
+if(isDeliverer):
+    order_id_modify = st.number_input("Order ID to change", 0)
+    order_status_modify = st.selectbox("Order Status", ["Processed", "Delivering", "Completed"])
+    submit_button = st.button("Change order status")
 
-df = pd.DataFrame(
-    {
-        "Order ID": [order.order_id for order in order_list],
-        "Email": [order.client_info.email for order in order_list],
-        "Phone Number": [order.client_info.phone for order in order_list],
-        "Location": [order.client_info.location for order in order_list],
-        "Order" : [order.make_string() for order in order_list],
-        "Date Placed" : [order.date_ordered for order in order_list],
-        "Status" : [st.session_state["Order " + str(i) + " Status"] for i in range(0, len(order_list))],
-        "Date Completed" : [st.session_state["Order " + str(i) + " Date"] for i in range(0, len(order_list))],
-    }
-)
+    if submit_button:
+        name = "Order " + str(order_id_modify)
+        if name + " Status" in st.session_state:
+            order_list[order_id_modify].status = order_status_modify
+            st.session_state[name + " Status"] = order_status_modify
+            if order_status_modify == "Completed":
+                datestr = dt.datetime.now().strftime("%y/%m/%d %H:%M")
+                order_list[order_id_modify].date_completed = datestr
+                st.session_state[name + " Date"] = datestr
+        
 
-# print(dt.datetime.now().strftime("%y/%m/%d %H:%M"))
-
-st.dataframe(df)
-print(st.session_state["Order 0 Status"] + "alpha")
-
-def update_table():
-    global df
     df = pd.DataFrame(
-    {
-        "Order ID": [order.order_id for order in order_list],
-        "Email": [order.client_info.email for order in order_list],
-        "Phone Number": [order.client_info.phone for order in order_list],
-        "Location": [order.client_info.location for order in order_list],
-        "Order" : [order.make_string() for order in order_list],
-        "Status" : [status for status in status_list]
-    }
-)
+        {
+            "Order ID": [order.order_id for order in order_list],
+            "Email": [order.client_info.email for order in order_list],
+            "Phone Number": [order.client_info.phone for order in order_list],
+            "Location": [order.client_info.location for order in order_list],
+            "Order" : [order.make_string() for order in order_list],
+            "Date Placed" : [order.date_ordered for order in order_list],
+            "Status" : [st.session_state["Order " + str(i) + " Status"] for i in range(0, len(order_list))],
+            "Date Completed" : [st.session_state["Order " + str(i) + " Date"] for i in range(0, len(order_list))],
+        }
+    )
+    st.dataframe(df)
+else:
+    st.write("GET YOUR GOOFY ASS OUT OF HERE!!!!")
+
