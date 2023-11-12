@@ -6,7 +6,7 @@ from datetime import datetime
 from sqlalchemy import ForeignKey
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://HackPrincetonUser:HackPrinceton@LAPTOP-JCH0P14A/hackprinceton'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://HackPrincetonUser:HackPrinceton@LAPTOP-JCH0P14A/hackprinceton'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app, resources={r"/*": {"origins": "*"}})
 db = SQLAlchemy(app)
