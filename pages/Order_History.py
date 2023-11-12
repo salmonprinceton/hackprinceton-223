@@ -1,7 +1,7 @@
 import datetime as dt
 import pandas as pd
 import streamlit as st
-from data_structure import ds
+from pages.data_structure import ds
 
 ethan = ds.User(1, "", "ep0148@princeton.edu", "curiousSalmon2", False)
 satan = ds.User(2, "Satan", "satan666@hell.com", "IHATEGOD666", False)
@@ -25,15 +25,32 @@ for delivery in delivery_list:
     if name + "Status" not in st.session_state:
         st.session_state[name + "Status"] = delivery.status
 
+def make_index_array():
+    if st.session_state["Current User"] != "":
+        output = []
+        for i in range(0, len(order_list)):
+            if order_list[i].user.email == st.session_state["Current User"]:
+                output.append(i)
+        return output
+    else:
+        return range(0, len(order_list))
+
+index_array = make_index_array()
+
 df = pd.DataFrame(
         {
-            "Order ID": [order.order_id for order in order_list],
-            "Email": [order.user.email for order in order_list],
-            "Location": [order.location for order in order_list],
-            "Order" : [order.make_string() for order in order_list],
-            "Date Placed" : [order.date_ordered for order in order_list],
-            "Status" : [st.session_state["Order " + str(i) + " Status"] for i in range(0, len(order_list))],
-            "Date Completed" : [st.session_state["Order " + str(i) + " Date"] for i in range(0, len(order_list))],
+            "Order ID": [order_list[i].order_id for i in index_array],
+            "Email": [order_list[i].user.email for i in index_array],
+            "Location": [order_list[i].location for i in index_array],
+            "Order": [order_list[i].make_string() for i in index_array],
+            "Date Placed": [order_list[i].date_ordered for i in index_array],
+            "Status" : [st.session_state["Order " + str(i) + " Status"] for i in index_array],
+            "Date Completed" : [st.session_state["Order " + str(i) + " Date"] for i in index_array],
+            # "Location": [order.location for order in order_list],
+            # "Order" : [order.make_string() for order in order_list],
+            # "Date Placed" : [order.date_ordered for order in order_list],
+            # "Status" : [st.session_state["Order " + str(i) + " Status"] for i in range(0, len(order_list))],
+            # "Date Completed" : [st.session_state["Order " + str(i) + " Date"] for i in range(0, len(order_list))],
         }
     )
 st.dataframe(df)
