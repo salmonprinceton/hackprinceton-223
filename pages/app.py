@@ -138,7 +138,7 @@ def get_all_delivery_data():
         delivery_list = []
         for delivery in deliveries:
             delivery_data = {
-                'completed_date': delivery.copmleted_date.strftime('%Y-%m-%d %H:%M:%S'),
+                'completed_date': delivery.completed_date.strftime('%Y-%m-%d %H:%M:%S'),
                 'status': delivery.status,
                 'Order_ID': delivery.Order_ID,
                 'Delivery_ID': delivery.Delivery_ID
