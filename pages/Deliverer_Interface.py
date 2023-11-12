@@ -1,24 +1,19 @@
 import datetime as dt
 import pandas as pd
 import streamlit as st
-from pages.data_structure import ds
+import requests
+import json
 
-ethan = ds.User(1, "", "ep0148@princeton.edu", "curiousSalmon2", False)
-satan = ds.User(2, "Satan", "satan666@hell.com", "IHATEGOD666", False)
-impostor = ds.User(3, "Red Impostor", "reallyred@sussybaka.net", "YOUARESUS", False)
-
-user_list = [ethan, satan, impostor, satan, ethan]
-product_list = ["Levonorgestrel (Plan B)", "Condoms", "Tampons", "Female Condoms", "Samsung Mega Capacity 31.5-cu ft Smart French Door Refrigerator with Dual Ice Maker (Fingerprint Resistant Stainless Steel) ENERGY STAR"]
-date_list = ["09/26/2004 12:00:00", "09/26/2004 12:00:00", "09/26/2004 12:00:00", "09/26/2004 12:00:00", "09/26/2004 12:00:00"]
-quantity_list = [1, 2, 3, 4, 5]
-location_list = ["Forbes College A166", "Hell", "Outer Space", "Hell", "Forbes College A166"]
-
-order_list = [ds.Order(i, user_list[i], product_list[i], date_list[i], quantity_list[i], location_list[i]) for i in range(0, len(user_list))]
-delivery_list = [ds.Delivery("Processed", "", order_list[i]) for i in range(0, len(user_list))]
+order_url = 'http://127.0.0.1:5000/order_data'
+response = requests.get(order_url)
+order_data = response.json()
+delivery_url = 'http://127.0.0.1:5000/delivery_data'
+delivery_response = requests.get(delivery_url)
+delivery_list = delivery_response.json()
 
 # initializing session state if it doesn't already exist
 for delivery in delivery_list:
-    name = "Order " + str(delivery.order.order_id) + " "
+    name = "Order " + str(delivery.Order_ID) + " "
 
     if name + "Date" not in st.session_state:
         st.session_state[name + "Date"] = ""
@@ -27,34 +22,28 @@ for delivery in delivery_list:
 
 isDeliverer = True
 
-if(isDeliverer):
-    order_id_modify = st.number_input("Order ID to change", 0)
-    order_status_modify = st.selectbox("Order Status", ["Processed", "Delivering", "Completed"])
+if isDeliverer:
+    Order_ID = st.number_input("Order ID to change", 0)
+    dt = dt.datetime.now()
+    dt_str = dt.strftime("%Y-%m-%d %H:%M:%S")
+    completed_date = json.dumps(dt_str)
+    status = st.selectbox("Order Status", ["Processed", "Delivering", "Completed"])
     submit_button = st.button("Change order status")
 
-    if submit_button:
-        name = "Order " + str(order_id_modify)
-        if name + " Status" in st.session_state:
-            delivery_list[order_id_modify].status = order_status_modify
-            st.session_state[name + " Status"] = order_status_modify
-            if order_status_modify == "Completed":
-                datestr = dt.datetime.now().strftime("%y/%m/%d %H:%M")
-                delivery_list[order_id_modify].date_completed = datestr
-                st.session_state[name + " Date"] = datestr
-        
-
-    df = pd.DataFrame(
-        {
-            "Order ID": [order.order_id for order in order_list],
-            "Email": [order.user.email for order in order_list],
-            "Location": [order.location for order in order_list],
-            "Order" : [order.make_string() for order in order_list],
-            "Date Placed" : [order.date_ordered for order in order_list],
-            "Status" : [st.session_state["Order " + str(i) + " Status"] for i in range(0, len(order_list))],
-            "Date Completed" : [st.session_state["Order " + str(i) + " Date"] for i in range(0, len(order_list))],
-        }
-    )
+    df = pd.DataFrame(order_data)
     st.dataframe(df)
 else:
     st.write("GET YOUR GOOFY ASS OUT OF HERE!!!!")
 
+delivery_url = 'http://127.0.0.1:5000/delivery_data'
+delivery_data = {'Order_ID': Order_ID,
+                 'completed_date': completed_date,
+                 'status': status
+                 }
+
+headers = {'Content-Type': 'application/json'}
+
+if submit_button:
+    response = requests.post(delivery_url, json=delivery_data, headers=headers)
+
+    print(response.text)
