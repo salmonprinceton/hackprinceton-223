@@ -3,7 +3,6 @@ import streamlit as st
 import datetime as dt
 import json
 
-st.title("Welcome to Princeton Care Package")
 st.title("✨Welcome to Princeton Care Package✨")
 if "Current User" not in st.session_state:
     st.session_state["Current User"] = ""
