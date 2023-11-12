@@ -57,15 +57,16 @@ existing_login = {
 
 if submitButton:
     response = requests.post(url, json=data, headers=headers)
-    if email in existing_login:
-        if existing_login[email] == password:
+    if email in existing_login: # do an sql select statement on the Users table where it searches for a user with that specific email
+    # if such a user exists, this code block should execute.
+
+        if existing_login[email] == password: # compare the password on the database with the entered password
             st.session_state["Current User"] = email
             st.session_state["User Display"] = "Welcome back, " + email + "!"
         else:
             st.session_state["User Display"] = "The entered password is incorrect. Did you make a typo?"
-    # print(response.text)
     else:
-        existing_login[email] = password
+        existing_login.update({email : password}) # this should update the users table with a new user object based on the entered credentials
         st.session_state["Current User"] = email
         st.session_state["User Display"] = "A new account was created for " + email + ". Welcome!~"
     st.rerun()
