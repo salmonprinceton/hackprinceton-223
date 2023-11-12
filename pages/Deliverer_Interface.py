@@ -1,7 +1,7 @@
 import datetime as dt
 import pandas as pd
 import streamlit as st
-from data_structure import ds
+from pages.data_structure import ds
 
 ethan = ds.User(1, "", "ep0148@princeton.edu", "curiousSalmon2", False)
 satan = ds.User(2, "Satan", "satan666@hell.com", "IHATEGOD666", False)
