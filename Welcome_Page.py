@@ -22,7 +22,6 @@ with st.form("customerInfo_form"):
 
     submitButton = st.form_submit_button(label="Enter")
 
-st.button("Show Order History")
 
 with st.form("placingOrder_form"):
     dt = dt.datetime.now()
