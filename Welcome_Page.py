@@ -9,7 +9,7 @@ if "Current User" not in st.session_state:
 if "User Display" not in st.session_state:
     st.session_state["User Display"] = "Hello! Please create a new account or log in :)"
 if "Is Deliverer" not in st.session_state:
-    st.session_state["Is Deliverer"] = False
+    st.session_state["Is Deliverer"] = True
 st.caption(st.session_state["User Display"])
 
 with st.form("customerInfo_form"):
