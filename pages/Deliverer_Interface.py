@@ -11,7 +11,7 @@ delivery_url = 'http://10.24.106.64:5000/delivery_data'
 delivery_response = requests.get(delivery_url)
 delivery_stuff = delivery_response.json()
 
-isDeliverer = False
+isDeliverer = True
 print(st.session_state["Is Deliverer"])
 if "Current User" in st.session_state:
     if st.session_state["Is Deliverer"] == 1:
