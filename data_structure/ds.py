@@ -17,10 +17,13 @@ class OrderItem:
         self.amount = amount
 
 class Order:
-    def __init__(self, order_id = 0, client_id = ClientInfo(), items = [OrderItem()]):
+    def __init__(self, order_id = 0, client_id = ClientInfo(), items = [OrderItem()], date_ordered = "", status = "", date_completed = ""):
         self.order_id = order_id
         self.client_info = client_id
         self.items = items
+        self.date_ordered = date_ordered
+        self.status = status
+        self.date_completed = date_completed
 
     def make_string(self):
         output = ""

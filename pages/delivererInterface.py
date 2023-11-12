@@ -22,7 +22,7 @@ order_item_list = {
 order_list = [ds.Order(i, client_list[i], order_item_list[i]) for i in range(0, len(client_list))]
 
 date_list = ["09/26/04 12:00", "12/66/66 66:66", "05/05/05", "05/05/05", "05/05/05"]
-order_list = [Order(i, client_list[i], order_item_list[i], date_list[i], "Processed") for i in range(0, len(client_list))]
+order_list = [ds.Order(i, client_list[i], order_item_list[i], date_list[i], "Processed") for i in range(0, len(client_list))]
 
 # initializing session state if it doesn't already exist
 for order in order_list:
@@ -46,8 +46,6 @@ if submit_button:
             datestr = dt.datetime.now().strftime("%y/%m/%d %H:%M")
             order_list[order_id_modify].date_completed = datestr
             st.session_state[name + " Date"] = datestr
-
-
     
 
 df = pd.DataFrame(
