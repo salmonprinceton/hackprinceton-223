@@ -3,37 +3,29 @@ import pandas as pd
 import streamlit as st
 from data_structure import ds
 
-ethan = ds.ClientInfo(1, 1, "", "2025151224", "Forbes College A166")
-satan = ds.ClientInfo(2, 2, "satan@hell.com", "66666666666", "The Underworld")
-impostor = ds.ClientInfo(3, 3, "redimpostor@sussybaka.net", "", "Outer Space")
+ethan = ds.User(1, "", "ep0148@princeton.edu", "curiousSalmon2", False)
+satan = ds.User(2, "Satan", "satan666@hell.com", "IHATEGOD666", False)
+impostor = ds.User(3, "Red Impostor", "reallyred@sussybaka.net", "YOUARESUS", False)
 
-client_list = [ethan, satan, impostor, satan, ethan]
+user_list = [ethan, satan, impostor, satan, ethan]
+product_list = ["Levonorgestrel (Plan B)", "Condoms", "Tampons", "Female Condoms", "Samsung Mega Capacity 31.5-cu ft Smart French Door Refrigerator with Dual Ice Maker (Fingerprint Resistant Stainless Steel) ENERGY STAR"]
+date_list = ["09/26/2004 12:00:00", "09/26/2004 12:00:00", "09/26/2004 12:00:00", "09/26/2004 12:00:00", "09/26/2004 12:00:00"]
+quantity_list = [1, 2, 3, 4, 5]
+location_list = ["Forbes College A166", "Hell", "Outer Space", "Hell", "Forbes College A166"]
 
-product_list = [ds.Product(0, "Levonorgestrel (Plan B)"), ds.Product(1, "Condoms"), ds.Product(2, "Tampons"),
-ds.Product(3, "Sacrificial Lamb"),]
-
-order_item_list = {
-    0: [ds.OrderItem(product_list[1], 2), ds.OrderItem(product_list[2], 1)],
-    1: [ds.OrderItem(product_list[1], 666)],
-    2: [ds.OrderItem(product_list[0], 1), ds.OrderItem(product_list[1], 1), ds.OrderItem(product_list[2], 1)],
-    3: [ds.OrderItem(product_list[3], 100)],
-    4: [ds.OrderItem(product_list[0], 1)],
-}
-order_list = [ds.Order(i, client_list[i], order_item_list[i]) for i in range(0, len(client_list))]
-
-date_list = ["09/26/04 12:00", "12/66/66 66:66", "05/05/05", "05/05/05", "05/05/05"]
-order_list = [ds.Order(i, client_list[i], order_item_list[i], date_list[i], "Processed") for i in range(0, len(client_list))]
+order_list = [ds.Order(i, user_list[i], product_list[i], date_list[i], quantity_list[i], location_list[i]) for i in range(0, len(user_list))]
+delivery_list = [ds.Delivery("Processed", "", order_list[i]) for i in range(0, len(user_list))]
 
 # initializing session state if it doesn't already exist
-for order in order_list:
-    name = "Order " + str(order.order_id) + " "
+for delivery in delivery_list:
+    name = "Order " + str(delivery.order.order_id) + " "
 
     if name + "Date" not in st.session_state:
         st.session_state[name + "Date"] = ""
     if name + "Status" not in st.session_state:
-        st.session_state[name + "Status"] = order.status
+        st.session_state[name + "Status"] = delivery.status
 
-isDeliverer = False
+isDeliverer = True
 
 if(isDeliverer):
     order_id_modify = st.number_input("Order ID to change", 0)
@@ -43,20 +35,19 @@ if(isDeliverer):
     if submit_button:
         name = "Order " + str(order_id_modify)
         if name + " Status" in st.session_state:
-            order_list[order_id_modify].status = order_status_modify
+            delivery_list[order_id_modify].status = order_status_modify
             st.session_state[name + " Status"] = order_status_modify
             if order_status_modify == "Completed":
                 datestr = dt.datetime.now().strftime("%y/%m/%d %H:%M")
-                order_list[order_id_modify].date_completed = datestr
+                delivery_list[order_id_modify].date_completed = datestr
                 st.session_state[name + " Date"] = datestr
         
 
     df = pd.DataFrame(
         {
             "Order ID": [order.order_id for order in order_list],
-            "Email": [order.client_info.email for order in order_list],
-            "Phone Number": [order.client_info.phone for order in order_list],
-            "Location": [order.client_info.location for order in order_list],
+            "Email": [order.user.email for order in order_list],
+            "Location": [order.location for order in order_list],
             "Order" : [order.make_string() for order in order_list],
             "Date Placed" : [order.date_ordered for order in order_list],
             "Status" : [st.session_state["Order " + str(i) + " Status"] for i in range(0, len(order_list))],

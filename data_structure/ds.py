@@ -1,34 +1,25 @@
-class ClientInfo:
-    def __init__(self, client_id = 0, user_id = 0, email = "", phone = "", location = ""):
-        self.client_id = client_id
+class User:
+    def __init__(self, user_id = 0, name = "", email = "", password = "", is_deliverer = False):
         self.user_id = user_id
+        self.name = user_id
         self.email = email
-        self.phone = phone
-        self.location = location
-
-class Product:
-    def __init__(self, product_id = 0, name = ""):
-        self.product_id = product_id
-        self.name = name
-
-class OrderItem:
-    def __init__(self, product = Product(), amount = 0):
-        self.product = product
-        self.amount = amount
+        self.password = password
+        self.is_deliverer = is_deliverer
 
 class Order:
-    def __init__(self, order_id = 0, client_id = ClientInfo(), items = [OrderItem()], date_ordered = "", status = "", date_completed = ""):
+    def __init__(self, order_id = 0, user = User(), product = "", date_ordered = "", quantity = 0, location = ""):
         self.order_id = order_id
-        self.client_info = client_id
-        self.items = items
+        self.user = user
+        self.product = product
         self.date_ordered = date_ordered
-        self.status = status
-        self.date_completed = date_completed
+        self.quantity = quantity
+        self.location = location
 
     def make_string(self):
-        output = ""
-        for i in range(0, len(self.items)):
-            output += str(self.items[i].amount) + " " + self.items[i].product.name
-            if i < len(self.items) - 1:
-                output += ", "
-        return output
+        return self.product + " " + str(self.quantity)
+
+class Delivery:
+    def __init__(self, status = "", date_completed = "", order = Order()):
+        self.status = ""
+        self.date_completed = ""
+        self.order = order
